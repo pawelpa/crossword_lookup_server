@@ -20,6 +20,8 @@ app.post('/api/crossword', (req, res) => {
 
     const db = new sqlite3.Database('db/crossword.db', sqlite3.OPEN_READONLY)
 
+    console.log(glob_expression)
+
     const stmt = db.all("SELECT * FROM crosswords WHERE word GLOB ?", glob_expression, (err, rows) => {
         if(err) {
             console.error(err.message)
