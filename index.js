@@ -1,11 +1,17 @@
 const express = require("express")
 const cors = require('cors')
+const path = require('node:path')
 const sqlite3 = require('sqlite3').verbose()
 
 const app = express();
 
 app.use(cors())
 app.use(express.json())
+
+
+app.get("/api", (req, res) => {
+    res.json({"message":"success"})
+})
 
 app.post('/api/crossword', (req, res) => {
 
@@ -18,7 +24,7 @@ app.post('/api/crossword', (req, res) => {
 
     const glob_expression = raw_glob.join('')
 
-    const db = new sqlite3.Database('db/crossword.db', sqlite3.OPEN_READONLY)
+    const db = new sqlite3.Database(path.resolve(__dirname,'crossword.js'), sqlite3.OPEN_READONLY)
 
     const stmt = db.all("SELECT * FROM crosswords WHERE word GLOB ?", glob_expression, (err, rows) => {
         if(err) {
@@ -36,4 +42,6 @@ app.post('/api/crossword', (req, res) => {
 
 })
 
-app.listen(3000, () => {console.log('listening on 3000')})
+app.listen(3001, () => {console.log('listening on 3001')})
+
+module.exports = app
