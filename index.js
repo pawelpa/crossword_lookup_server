@@ -13,6 +13,33 @@ app.get("/api", (req, res) => {
     res.json({"message":"success"})
 })
 
+app.post("/api/add", (req, res) => {
+
+    const db = new sqlite3.Database(path.resolve(__dirname, "crossword.js"), sqlite3.OPEN_READWRITE)
+
+    words = req.body.map( arr => {
+        return arr[1]
+    })
+
+    const sql = "INSERT OR IGNORE INTO crosswords(word) VALUES(?)"
+
+    db.serialize(() => {
+        db.run("BEGIN TRANSACTION")
+        words.forEach(word => {
+            db.run(sql,word)
+        });
+        db.run("COMMIT")
+    })
+
+    res.sendStatus(201).end()
+
+    db.close((err) => {
+        if(err) {
+            console.error(err)
+        }
+    })
+})
+
 app.post('/api/crossword', (req, res) => {
 
     let raw_glob = Object.values(req.body)
