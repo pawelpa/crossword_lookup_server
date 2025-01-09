@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require('cors')
 const path = require('node:path')
 const sqlite3 = require('sqlite3').verbose()
+const {chmodSync} = require('node:fs')
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get("/api", (req, res) => {
 
 app.post("/api/add", (req, res) => {
 
+    chmodSync(path.resolve(__dirname, "crossword.js"), 0o644)
     const db = new sqlite3.Database(path.resolve(__dirname, "crossword.js"), sqlite3.OPEN_READWRITE)
 
     words = req.body.map( arr => {
