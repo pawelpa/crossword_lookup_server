@@ -63,7 +63,7 @@ app.post('/api/crossword', (req, res) => {
 
     db.close((err) => {
         if(err) {
-            console.error(err.message)
+            console.error(err)
         }
     })
 
