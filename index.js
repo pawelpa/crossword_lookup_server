@@ -51,7 +51,7 @@ app.post('/api/crossword', (req, res) => {
 
     const glob_expression = raw_glob.join('')
 
-    const db = new sqlite3.Database(path.resolve(__dirname,'crossword.js'), sqlite3.OPEN_READONLY)
+    const db = new sqlite3.Database(path.resolve(__dirname,'crossword.js'), sqlite3.OPEN_READWRITE)
 
     const stmt = db.all("SELECT * FROM crosswords WHERE word GLOB ?", glob_expression, (err, rows) => {
         if(err) {
